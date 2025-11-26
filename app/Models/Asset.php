@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\AssetStatusEnum;
+use App\AssetStatusEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,6 +18,7 @@ class Asset extends Model
      *
      * @var array<int, string>
      */
+    //protected $table = 'asset';
     protected $fillable = [
         'category_id',
         'location_id',

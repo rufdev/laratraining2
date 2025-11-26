@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\AssetStatusEnum; // Import AssetStatusEnum
+use App\AssetStatusEnum; // Import AssetStatusEnum
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Manufacturer;

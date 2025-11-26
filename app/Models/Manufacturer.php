@@ -17,6 +17,8 @@ class Manufacturer extends Model
      *
      * @var array<int, string>
      */
+
+    // protected $table = 'manufacturer';
     protected $fillable = [
         'name',
         'url',
