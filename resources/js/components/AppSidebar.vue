@@ -20,29 +20,35 @@ import AppLogo from './AppLogo.vue';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: '/dashboard',
         icon: LayoutGrid,
+        roles: ['super_admin','inventory_manager','inventory_user'],
     },
     {
         title: 'Assets',
         href: '/assets',
         icon: LaptopMinimalCheck,
+        roles: ['super_admin','inventory_user'],
     },
     {
         title: 'Categories',
         href: '/categories',
         icon: LayoutGrid,
-    },
-    {
-        title: 'Locations',
-        href: '/locations',
-        icon: LayoutGrid,
+        roles: ['super_admin'],
     },
     {
         title: 'Manufacturers',
         href: '/manufacturers',
         icon: LayoutGrid,
+        roles: ['super_admin','inventory_manager'],
     },
+    {
+        title: 'Locations',
+        href: '/locations',
+        icon: LayoutGrid,
+        roles: ['super_admin','inventory_manager'],
+    },
+
 ];
 
 const footerNavItems: NavItem[] = [
