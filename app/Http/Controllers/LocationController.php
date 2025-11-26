@@ -9,7 +9,7 @@ use App\Http\Requests\UpdateLocationRequest;
 
 class LocationController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -22,14 +22,16 @@ class LocationController extends Controller
      */
     public function store(StoreLocationRequest $request)
     {
-        $validatedData = $request->validated();
+       // \Log::info("message", ['request' => $request->all()]);
+        
+       $validatedData = $request->validated();
 
-        $location = Location::create($validatedData);
+       $location = Location::create($validatedData);
 
-        return response()->json([
-            'message' => 'Location created successfully!',
-            'location' => $location // Optionally return the created location data
-        ], 201); // 201 Created status code
+       return response()->json([
+           'message' => 'Location created successfully!',
+           'location' => $location // Optionally return the created Location data
+       ], 201); // 201 Created status code
     }
 
     /**
@@ -46,6 +48,7 @@ class LocationController extends Controller
         return response()->json($location);
     }
 
+
     /**
      * Update the specified resource in storage.
      */
@@ -57,9 +60,10 @@ class LocationController extends Controller
 
         return response()->json([
             'message' => 'Location updated successfully!',
-            'location' => $location->fresh() // Return the fresh, updated location data
+            'location' => $location->fresh() // Return the fresh, updated Location data
         ], 200); // 200 OK status code for successful updates
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -67,12 +71,12 @@ class LocationController extends Controller
     public function destroy($id)
     {
         try {
-            $location = Location::findOrFail($id); // Find the location or throw a 404 error
-            $location->delete(); // Delete the location
+            $location = Location::findOrFail($id); // Find the Location or throw a 404 error
+            $location->delete(); // Delete the Location
 
             return response()->json(['message' => 'Location deleted successfully.'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Failed to delete location.'], 500);
+            return response()->json(['message' => 'Failed to delete Location.'], 500);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enums\AssetStatusEnum;
+use App\AssetStatusEnum;
 
 class StoreAssetRequest extends FormRequest
 {
