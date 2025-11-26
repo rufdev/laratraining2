@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -18,7 +20,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
        // \Log::info("message", ['request' => $request->all()]);
         
@@ -50,16 +52,31 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $validatedData = $request->validated();
+
+        $category->update($validatedData);
+
+        return response()->json([
+            'message' => 'Category updated successfully!',
+            'category' => $category->fresh() // Return the fresh, updated category data
+        ], 200); // 200 OK status code for successful updates
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        try {
+            $category = Category::findOrFail($id); // Find the category or throw a 404 error
+            $category->delete(); // Delete the category
+
+            return response()->json(['message' => 'Category deleted successfully.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to delete category.'], 500);
+        }
     }
 }
