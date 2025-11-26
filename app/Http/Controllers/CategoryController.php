@@ -20,7 +20,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       // \Log::info("message", ['request' => $request->all()]);
+        
+       $validatedData = $request->validated();
+
+       $category = Category::create($validatedData);
+
+       return response()->json([
+           'message' => 'Category created successfully!',
+           'category' => $category // Optionally return the created category data
+       ], 201); // 201 Created status code
     }
 
     /**
