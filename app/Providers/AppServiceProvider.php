@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules;
+use Inertia\Inertia;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,5 +26,17 @@ class AppServiceProvider extends ServiceProvider
                 ->numbers()
                 ->symbols();
         });
+
+        Inertia::share([
+            'auth' => function () {
+                return [
+                    'user' => auth()->check() ? [
+                        'id' => auth()->user()->id,
+                        'name' => auth()->user()->name,
+                        'role' => auth()->user()->role->value, // Pass the user's role
+                    ] : null,
+                ];
+            },
+        ]);
     }
 }
