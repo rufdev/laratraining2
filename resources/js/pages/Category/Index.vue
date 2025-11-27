@@ -151,6 +151,45 @@ const form = useForm({
     },
 });
 
+/* Form Handlers */
+const resetForm = () => {
+    form.resetForm(); // Reset the form
+    itemID.value = null; // Clear the item ID
+};
+
+const tableRef = ref<InstanceType<typeof ReusableTable> | null>(null); // Reference to the table component
+
+const onSubmit = async (values: any) => {
+    try {
+        // const result = schema.safeParse(values);
+        // console.log(result);
+        // if (!result.success) {
+        //     form.setErrors(result.error.flatten().fieldErrors); // Set validation errors
+        //     toast.error('Validation failed. Please check your input.');
+        //     return;
+        // }
+
+        if (mode.value === 'create') {
+            await axios.post(`${baseentityurl}`, values); // Create a new category
+            toast.success(`${baseentityname} created successfully.`);
+        } else if (mode.value === 'edit') {
+            await axios.put(`${baseentityurl}/${itemID.value}`, values); // Update an existing category
+            toast.success(`${baseentityname} updated successfully.`);
+        }
+
+        resetForm(); // Reset the form
+        await tableRef.value?.fetchRows(); // Refresh the table data
+        showDialogForm.value = false; // Hide the form dialog
+    } catch (error: any) {
+        if (error.response && error.response.status === 422) {
+            form.setErrors(error.response.data.errors); // Set validation errors
+            toast.error('Validation failed. Please check your input.');
+        } else {
+            toast.error('An unexpected error occurred.');
+        }
+    }
+};
+
 
 
 </script>
