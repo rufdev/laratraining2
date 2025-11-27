@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Resources\CategoryResource;
-
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 class CategoryController extends Controller
 {
     /**
@@ -42,22 +41,21 @@ class CategoryController extends Controller
         
         return $categories;
     }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCategoryRequest $request)
     {
-       // \Log::info("message", ['request' => $request->all()]);
+        // \Log::info("message", ['request' => $request->all()]);
         
-       $validatedData = $request->validated();
+        $validatedData = $request->validated();
 
-       $category = Category::create($validatedData);
+        $category = Category::create($validatedData);
 
-       return response()->json([
-           'message' => 'Category created successfully!',
-           'category' => $category // Optionally return the created category data
-       ], 201); // 201 Created status code
+        return response()->json([
+            'message' => 'Category created successfully!',
+            'category' => $category // Optionally return the created category data
+        ], 201); // 201 Created status code
     }
 
     /**
@@ -74,7 +72,6 @@ class CategoryController extends Controller
         return response()->json($category);
     }
 
-
     /**
      * Update the specified resource in storage.
      */
@@ -89,7 +86,6 @@ class CategoryController extends Controller
             'category' => $category->fresh() // Return the fresh, updated category data
         ], 200); // 200 OK status code for successful updates
     }
-
 
     /**
      * Remove the specified resource from storage.

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
 use Illuminate\Http\Request;
+use App\Models\Asset;
 use App\Http\Requests\StoreAssetRequest;
 use App\Http\Requests\UpdateAssetRequest;
-
+use App\Http\Resources\AssetResource;
+use App\Models\Category;
+use App\Models\Location;
+use App\Models\Manufacturer;
+use App\Models\User;
 class AssetController extends Controller
 {
     /**
@@ -14,7 +18,40 @@ class AssetController extends Controller
      */
     public function index()
     {
-        return inertia('Asset/Index');
+        $categories = Category::orderBy('name','asc')->get(['id', 'name']);
+        $locations = Location::orderBy('name','asc')->get(['id', 'name']);
+        $manufacturers = Manufacturer::orderBy('name','asc')->get(['id', 'name']);
+        $users = User::orderBy('name','asc')->get(['id', 'name']);
+
+        return inertia('Asset/Index', [
+            'categories' => $categories,
+            'locations' => $locations,
+            'manufacturers' => $manufacturers,
+            'users' => $users,
+        ]);
+    }
+
+    public function list(Request $request)
+    {
+        $query = Asset::query();
+
+        if ($request->has('searchtext') && !empty($request->input('searchtext'))) {
+            $search = $request->input('searchtext');
+            $query
+                ->whereLike('name', '%'.$search.'%');
+        }
+
+        if ($request->has('sort_field') && $request->has('sort_direction')) {
+            $query->orderBy($request->input('sort_field'), $request->input('sort_direction'));
+        } else {
+            $query->orderBy('name', 'asc'); // Default sorting
+        }
+
+        $asset = AssetResource::collection(
+            $query->orderBy('name', 'asc')->paginate($request->input('per_page', 5))
+        );
+        
+        return $asset;
     }
 
     /**
@@ -52,9 +89,7 @@ class AssetController extends Controller
     public function update(UpdateAssetRequest $request, Asset $asset)
     {
         $validatedData = $request->validated();
-
-        \Log::info('UpdateAssetRequest validated data:', $validatedData); 
-          
+        \Log::info('UpdateAssetRequest validated data:', $validatedData);   
         $asset->update($validatedData);
 
         return response()->json([
