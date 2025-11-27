@@ -19,12 +19,12 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified', 'role:super_admin'])->group(function () {
-    Route::post('categories', [CategoryController::class,'list'])->name('categories.list');
+    Route::post('categories/list', [CategoryController::class, 'list'])->name('categories.list');
     Route::resource('categories', CategoryController::class)->except(['create', 'edit']);
 });
 
 Route::middleware(['auth', 'verified', 'role:super_admin,inventory_manager'])->group(function () {
-    
+
 });
 
 Route::middleware(['auth', 'verified', 'role:super_admin,inventory_user'])->group(function () {
