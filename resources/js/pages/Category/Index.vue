@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ReusableDropDownAction from '@/components/entitycomponents/ReusableDropDownAction.vue'; // Dropdown for row actions (edit/delete)
 import ReusableTable from '@/components/entitycomponents/ReusableTable.vue'; // Table component for displaying data
-import ReusableAlertDialog from '@/components/entitycomponents/ReusableAlertDialog.vue';
+// import ReusableAlertDialog from '@/components/entitycomponents/ReusableAlertDialog.vue';
 import { AutoForm } from '@/components/ui/auto-form'; // AutoForm component for form handling
 import { Button } from '@/components/ui/button'; // Button component
 import { Checkbox } from '@/components/ui/checkbox'; // Checkbox component for row selection
@@ -110,6 +110,48 @@ const handleOpenDialogForm = () => {
     mode.value = 'create'; // Set mode to create
 };
 
+/* Form Schema and Configuration */
+const schema = z.object({
+    name: z
+        .string({
+            required_error: 'Name is required',
+            invalid_type_error: 'Name must be a string',
+        })
+        .toUpperCase()
+        .min(3, {
+            message: 'Name must be at least 3 characters long',
+        }),
+    description: z.string().toUpperCase().optional(),
+});
+
+const fieldconfig: any = {
+    name: {
+        label: 'Name',
+        inputProps: {
+            type: 'text',
+            class: 'uppercase',
+        },
+        description: 'Name of the category',
+    },
+    description: {
+        label: 'Description',
+        component: 'textarea',
+        inputProps: {
+            class: 'uppercase',
+            placeholder: 'Enter category description',
+        },
+    },
+};
+
+const form = useForm({
+    validationSchema: toTypedSchema(schema), // Validation schema
+    initialValues: {
+        name: '',
+        description: '',
+    },
+});
+
+
 
 </script>
 
@@ -135,13 +177,13 @@ const handleOpenDialogForm = () => {
                         <DialogTitle>{{ mode === 'create' ? 'Create' : 'Update' }} {{ baseentityname }}</DialogTitle>
                     </DialogHeader>
                     <DialogDescription> Use this form to edit the {{ baseentityname }} details. </DialogDescription>
-                    <!-- <AutoForm class="space-y-6" :form="form" :schema="schema" :field-config="fieldconfig" @submit="onSubmit">
+                    <AutoForm class="space-y-6" :form="form" :schema="schema" :field-config="fieldconfig" @submit="onSubmit">
                         <DialogFooter>
                             <Button type="submit" class="bg-green-300">
                                 {{ mode === 'create' ? 'Create' : 'Update' }}
                             </Button>
                         </DialogFooter>
-                    </AutoForm> -->
+                    </AutoForm>
                 </DialogContent>
             </Dialog>
         </div>
