@@ -92,7 +92,7 @@ const columns: ColumnDef<Category>[] = [
                 { class: 'relative' },
                 h(ReusableDropDownAction, {
                     rowitem,
-                    onEdit: undefined, // Edit handler
+                    onEdit: handleEdit, // Edit handler
                     onDelete: undefined, // Delete handler
                 }),
             );
@@ -187,6 +187,20 @@ const onSubmit = async (values: any) => {
         } else {
             toast.error('An unexpected error occurred.');
         }
+    }
+};
+
+/* Edit Handler */
+const handleEdit = async (id: number) => {
+    try {
+        mode.value = 'edit'; // Set mode to edit
+        itemID.value = id; // Set the item ID
+        const response = await axios.get(`${baseentityurl}/${id}`); // Fetch the item data
+        form.setValues(response.data); // Populate the form with the item data
+        showDialogForm.value = true; // Show the form dialog
+    } catch (error) {
+        console.log(`Error fetching ${baseentityname} data:`, error);
+        toast.error(`Failed to fetch ${baseentityname} data.`);
     }
 };
 
