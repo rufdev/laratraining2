@@ -1,19 +1,28 @@
 <script setup lang="ts">
-/* Import Components */
 import ReusableDropDownAction from '@/components/entitycomponents/ReusableDropDownAction.vue'; // Dropdown for row actions (edit/delete)
 import ReusableTable from '@/components/entitycomponents/ReusableTable.vue'; // Table component for displaying data
+import ReusableAlertDialog from '@/components/entitycomponents/ReusableAlertDialog.vue';
+import { AutoForm } from '@/components/ui/auto-form'; // AutoForm component for form handling
 import { Button } from '@/components/ui/button'; // Button component
 import { Checkbox } from '@/components/ui/checkbox'; // Checkbox component for row selection
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'; // Dialog components for forms
 import AppLayout from '@/layouts/AppLayout.vue'; // Layout component for the page
 import { Head } from '@inertiajs/vue3'; // Head component for setting the page title
+
+/* Import Utilities */
+import { toTypedSchema } from '@vee-validate/zod'; // Utility for converting Zod schemas to Vee-Validate schemas
+import axios from 'axios'; // HTTP client for API requests
+import { ArrowUpDown, Plus } from 'lucide-vue-next'; // Icons for UI
+import { useForm } from 'vee-validate'; // Form validation library
+import { h, ref } from 'vue'; // Vue composition API utilities
+import { toast } from 'vue-sonner'; // Toast notifications
+import * as z from 'zod'; // Zod library for schema validation
 
 /* Import Table Utilities */
 import type { ColumnDef } from '@tanstack/vue-table'; // Type definitions for table columns
 
 /* Import Types */
 import { BreadcrumbItem } from '@/types'; // Type definition for breadcrumbs
-import { h } from 'vue';
-import { ArrowUpDown } from 'lucide-vue-next';
 
 /* Base Entity Configuration */
 const baseentityurl = '/categories'; // API endpoint for the entity
@@ -91,6 +100,16 @@ const columns: ColumnDef<Category>[] = [
     },
 ];
 
+/* Dialog State */
+const showDialogForm = ref(false); // State for showing/hiding the form dialog
+const mode = ref('create'); // Mode for the form (create/edit)
+const itemID = ref<number | null>(null); // ID of the item being edited
+
+const handleOpenDialogForm = () => {
+    showDialogForm.value = true; // Show the form dialog
+    mode.value = 'create'; // Set mode to create
+};
+
 
 </script>
 
@@ -109,6 +128,22 @@ const columns: ColumnDef<Category>[] = [
             <!-- Table -->
             <ReusableTable ref="tableRef" :columns="columns" :baseentityname="baseentityname" :baseentityurl="baseentityurl" />
 
+             <!-- Dialog Form -->
+             <Dialog v-model:open="showDialogForm">
+                <DialogContent class="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>{{ mode === 'create' ? 'Create' : 'Update' }} {{ baseentityname }}</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription> Use this form to edit the {{ baseentityname }} details. </DialogDescription>
+                    <!-- <AutoForm class="space-y-6" :form="form" :schema="schema" :field-config="fieldconfig" @submit="onSubmit">
+                        <DialogFooter>
+                            <Button type="submit" class="bg-green-300">
+                                {{ mode === 'create' ? 'Create' : 'Update' }}
+                            </Button>
+                        </DialogFooter>
+                    </AutoForm> -->
+                </DialogContent>
+            </Dialog>
         </div>
     </AppLayout>
 </template>
