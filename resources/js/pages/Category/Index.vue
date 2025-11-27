@@ -100,7 +100,12 @@ const columns: ColumnDef<Category>[] = [
     <!-- Layout -->
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-2 rounded-xl p-4">
-
+             <!-- Create Button -->
+             <div class="flex items-center gap-2 py-2">
+                <div class="ml-auto flex items-center gap-2">
+                    <Button class="bg-cyan-500" @click="handleOpenDialogForm"> <Plus class="h-4"></Plus> Create {{ baseentityname }} </Button>
+                </div>
+            </div>
             <!-- Table -->
             <ReusableTable ref="tableRef" :columns="columns" :baseentityname="baseentityname" :baseentityurl="baseentityurl" />
 
