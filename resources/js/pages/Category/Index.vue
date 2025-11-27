@@ -83,8 +83,8 @@ const columns: ColumnDef<Category>[] = [
                 { class: 'relative' },
                 h(ReusableDropDownAction, {
                     rowitem,
-                    onEdit: handleEdit, // Edit handler
-                    onDelete: openDeleteDialog, // Delete handler
+                    onEdit: undefined, // Edit handler
+                    onDelete: undefined, // Delete handler
                 }),
             );
         },
