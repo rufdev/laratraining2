@@ -72,7 +72,7 @@ const columns: ColumnDef<Category>[] = [
         header: 'Description',
         cell: ({ row }) => h('div', { class: 'break-words whitespace-normal' }, row.getValue('description')),
     },
-    {
+    { 
         id: 'actions', // Column for row actions (edit/delete)
         enableHiding: false, // Disable hiding for this column
         cell: ({ row }) => {
