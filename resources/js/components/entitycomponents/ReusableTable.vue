@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { valueUpdater } from '@/components/ui/table/utils';
+import { valueUpdater } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import {
     ColumnDef,
@@ -24,7 +24,6 @@ import {
 import axios from 'axios';
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-vue-next';
 import { onMounted, ref, watch } from 'vue';
-import { Progress } from '@/components/ui/progress';
 
 /* Define props passed to the component */
 const props = defineProps({
