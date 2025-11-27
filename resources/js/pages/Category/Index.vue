@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ReusableDropDownAction from '@/components/entitycomponents/ReusableDropDownAction.vue'; // Dropdown for row actions (edit/delete)
 import ReusableTable from '@/components/entitycomponents/ReusableTable.vue'; // Table component for displaying data
-// import ReusableAlertDialog from '@/components/entitycomponents/ReusableAlertDialog.vue';
+import ReusableAlertDialog from '@/components/entitycomponents/ReusableAlertDialog.vue';
 import { AutoForm } from '@/components/ui/auto-form'; // AutoForm component for form handling
 import { Button } from '@/components/ui/button'; // Button component
 import { Checkbox } from '@/components/ui/checkbox'; // Checkbox component for row selection
@@ -93,7 +93,7 @@ const columns: ColumnDef<Category>[] = [
                 h(ReusableDropDownAction, {
                     rowitem,
                     onEdit: handleEdit, // Edit handler
-                    onDelete: undefined, // Delete handler
+                    onDelete: openDeleteDialog, // Delete handler
                 }),
             );
         },
@@ -204,7 +204,29 @@ const handleEdit = async (id: number) => {
     }
 };
 
+/* Delete Dialog State */
+const showDeleteDialog = ref(false); // State for showing/hiding the delete confirmation dialog
+const itemIDToDelete = ref<number | null>(null); // ID of the item to be deleted
 
+const openDeleteDialog = (id: number) => {
+    itemIDToDelete.value = id; // Set the item ID to delete
+    showDeleteDialog.value = true; // Show the delete confirmation dialog
+};
+
+
+const handleDelete = async () => {
+    try {
+        if (!itemIDToDelete.value) return;
+
+        await axios.delete(`${baseentityurl}/${itemIDToDelete.value}`); // Delete the item
+        toast.success(`${baseentityname} deleted successfully.`);
+        await tableRef.value?.fetchRows(); // Refresh the table data
+        showDeleteDialog.value = false; // Hide the delete confirmation dialog
+    } catch (error) {
+        console.log(`Error deleting ${baseentityname}:`, error);
+        toast.error(`Failed to delete ${baseentityname}. Please try again.`);
+    }
+};
 
 </script>
 
@@ -239,6 +261,15 @@ const handleEdit = async (id: number) => {
                     </AutoForm>
                 </DialogContent>
             </Dialog>
+
+            <!-- Delete Confirmation Dialog -->
+            <ReusableAlertDialog
+                :open="showDeleteDialog"
+                :title="`Delete ${baseentityname}`"
+                :description="`Are you sure you want to delete this ${baseentityname}? This action cannot be undone.`"
+                @confirm="handleDelete"
+                @cancel="showDeleteDialog = false"
+            />
         </div>
     </AppLayout>
 </template>
