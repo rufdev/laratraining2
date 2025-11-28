@@ -7,6 +7,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\DashboardController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -14,9 +16,10 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/stats', [DashboardController::class, 'stats'])->name('dashboard.stats');
+});
 
 Route::middleware(['auth', 'verified', 'role:super_admin'])->group(function () {
     Route::post('categories/list', [CategoryController::class, 'list'])->name('categories.list');
