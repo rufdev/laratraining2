@@ -269,10 +269,39 @@ onMounted(async () => {
                 </div>
                 <!-- Metric Item End -->
             </div>
-            <div
-                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border"
-            >
-                <PlaceholderPattern />
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+                    <div v-if="loading" class="flex h-full items-center justify-center">
+                        <div class="spinner-border inline-block h-8 w-8 animate-spin rounded-full border-4" role="status"></div>
+                    </div>
+                    <div v-else>
+                        <BarChart :chart-data="chartData" :chart-options="chartOptions" />
+                    </div>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+                    <div v-if="loading" class="flex h-full items-center justify-center">
+                        <div class="spinner-border inline-block h-8 w-8 animate-spin rounded-full border-4" role="status"></div>
+                    </div>
+                    <div v-else>
+                        <PieChart :chart-data="piechartData" :chart-options="piechartOptions" />
+                    </div>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+                    <div v-if="loading" class="flex h-full items-center justify-center">
+                        <div class="spinner-border inline-block h-8 w-8 animate-spin rounded-full border-4" role="status"></div>
+                    </div>
+                    <div v-else>
+                        <DoughnutChart :chart-data="doughnutData" :chart-options="doughnutOptions" />
+                    </div>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+                    <div v-if="loading" class="flex h-full items-center justify-center">
+                        <div class="spinner-border inline-block h-8 w-8 animate-spin rounded-full border-4" role="status"></div>
+                    </div>
+                    <div v-else>
+                        <BarChart :chart-data="chart2Data" :chart-options="chart2Options" />
+                    </div>
+                </div>
             </div>
         </div>
     </AppLayout>
