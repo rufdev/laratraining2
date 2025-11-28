@@ -11,6 +11,8 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import { LaptopMinimalCheck } from 'lucide-vue-next';
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -74,7 +76,7 @@ const rendercharts = () => {
         datasets: [
             {
                 label: 'Assets by Status',
-                backgroundColor: charts.value.assets_by_status ? charts.value.assets_by_status.map(() => generateRandomColor()) : [],
+                backgroundColor: ['#4ade80', '#facc15', '#f87171', '#60a5fa', '#a78bfa', '#f472b6'], // Predefined colors for better visibility
                 data: charts.value.assets_by_status ? charts.value.assets_by_status.map((item: any) => item.total) : [],
             },
         ],
@@ -107,7 +109,7 @@ const rendercharts = () => {
 
     //Pie Chart Asset by Category
     piechartData = {
-        labels: charts.value.assets_by_category ? charts.value.assets_by_category.map((item: any) => item.category.name) : [],
+        labels: charts.value.assets_by_category ? charts.value.assets_by_category.map((item: any) => item.category?.name || "NO CATEGORY"  ) : [],
         datasets: [
             {
                 label: 'Assets by Category',
@@ -222,11 +224,16 @@ onMounted(async () => {
         >
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 xl:grid-cols-4">
                 <!-- Metric Item Start -->
-                <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-                    <p class="text-theme-sm text-gray-500 dark:text-gray-400">Total Assets</p>
-
+                <div class="rounded-2xl border border-gray-200 bg-amber-300 p-5 dark:border-gray-800 dark:bg-amber-300">
+                     <div class="flex items-center">
+                        <!-- Icon -->
+                        <LaptopMinimalCheck class="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                        <!-- Text -->
+                        <p class="ml-2 text-theme-sm text-gray-500 dark:text-gray-400">Total Assets</p>
+                    </div>
                     <div class="mt-3 flex items-end justify-between">
                         <div>
+                            
                             <h4 class="text-2xl font-bold text-gray-800 dark:text-white/90">{{ totals.total_assets }}</h4>
                         </div>
                     </div>
