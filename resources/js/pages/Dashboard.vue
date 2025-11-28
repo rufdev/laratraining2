@@ -11,7 +11,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
-import { LaptopMinimalCheck } from 'lucide-vue-next';
+import { LaptopMinimalCheck,Bot } from 'lucide-vue-next';
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -227,7 +227,7 @@ onMounted(async () => {
                 <div class="rounded-2xl border border-gray-200 bg-amber-300 p-5 dark:border-gray-800 dark:bg-amber-300">
                      <div class="flex items-center">
                         <!-- Icon -->
-                        <LaptopMinimalCheck class="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                        <Bot class="h-6 w-6 text-gray-500 dark:text-gray-400" />
                         <!-- Text -->
                         <p class="ml-2 text-theme-sm text-gray-500 dark:text-gray-400">Total Assets</p>
                     </div>
